@@ -1,11 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
-import SanityAnalysis from './pages/SanityAnalysis';
+// import SanityAnalysis from './pages/SanityAnalysis';
+import Routes from './routes';
 
 function App() {
   return (
     <div className="App">
-      <SanityAnalysis />
+      {/* <SanityAnalysis /> */}
+      <Routes />
     </div>
   );
 }
