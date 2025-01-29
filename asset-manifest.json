@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/aquasanidade/static/css/main.7428336b.css",
-    "main.js": "/aquasanidade/static/js/main.da925d34.js",
+    "main.css": "/aquasanidade/static/css/main.0ad41a22.css",
+    "main.js": "/aquasanidade/static/js/main.d0ddeb0e.js",
     "static/js/239.0ee698dc.chunk.js": "/aquasanidade/static/js/239.0ee698dc.chunk.js",
     "static/js/213.2acff52e.chunk.js": "/aquasanidade/static/js/213.2acff52e.chunk.js",
     "static/js/732.f7f96e75.chunk.js": "/aquasanidade/static/js/732.f7f96e75.chunk.js",
@@ -11,6 +11,7 @@
     "static/media/im01.png": "/aquasanidade/static/media/im01.8ef1a49b9b9b39494035.png",
     "static/media/im05.png": "/aquasanidade/static/media/im05.562acbec70b88fde6bbb.png",
     "static/media/morfologia_camarao.png": "/aquasanidade/static/media/morfologia_camarao.2e608987cf63e73d8f94.png",
+    "static/media/morada_nova-02.jpg": "/aquasanidade/static/media/morada_nova-02.198b5a40ca79f3fe3846.jpg",
     "static/media/ip04.png": "/aquasanidade/static/media/ip04.364b2650f067a2bca694.png",
     "static/media/ip01.png": "/aquasanidade/static/media/ip01.49bbd6fd7e65e1036337.png",
     "static/media/ip02.png": "/aquasanidade/static/media/ip02.fe9e7bfa7140a48d355a.png",
@@ -33,14 +34,14 @@
     "static/media/hp03.jpg": "/aquasanidade/static/media/hp03.881be7368ad18aabfb88.jpg",
     "static/media/logo.svg": "/aquasanidade/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/aquasanidade/index.html",
-    "main.7428336b.css.map": "/aquasanidade/static/css/main.7428336b.css.map",
-    "main.da925d34.js.map": "/aquasanidade/static/js/main.da925d34.js.map",
+    "main.0ad41a22.css.map": "/aquasanidade/static/css/main.0ad41a22.css.map",
+    "main.d0ddeb0e.js.map": "/aquasanidade/static/js/main.d0ddeb0e.js.map",
     "239.0ee698dc.chunk.js.map": "/aquasanidade/static/js/239.0ee698dc.chunk.js.map",
     "213.2acff52e.chunk.js.map": "/aquasanidade/static/js/213.2acff52e.chunk.js.map",
     "732.f7f96e75.chunk.js.map": "/aquasanidade/static/js/732.f7f96e75.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7428336b.css",
-    "static/js/main.da925d34.js"
+    "static/css/main.0ad41a22.css",
+    "static/js/main.d0ddeb0e.js"
   ]
 }
