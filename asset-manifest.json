@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/aquasanidade/static/css/main.82eac9b0.css",
-    "main.js": "/aquasanidade/static/js/main.2fd7e112.js",
+    "main.js": "/aquasanidade/static/js/main.60330215.js",
     "static/js/239.0ee698dc.chunk.js": "/aquasanidade/static/js/239.0ee698dc.chunk.js",
     "static/js/213.2acff52e.chunk.js": "/aquasanidade/static/js/213.2acff52e.chunk.js",
     "static/js/732.f7f96e75.chunk.js": "/aquasanidade/static/js/732.f7f96e75.chunk.js",
@@ -36,13 +36,13 @@
     "static/media/logo.svg": "/aquasanidade/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/aquasanidade/index.html",
     "main.82eac9b0.css.map": "/aquasanidade/static/css/main.82eac9b0.css.map",
-    "main.2fd7e112.js.map": "/aquasanidade/static/js/main.2fd7e112.js.map",
+    "main.60330215.js.map": "/aquasanidade/static/js/main.60330215.js.map",
     "239.0ee698dc.chunk.js.map": "/aquasanidade/static/js/239.0ee698dc.chunk.js.map",
     "213.2acff52e.chunk.js.map": "/aquasanidade/static/js/213.2acff52e.chunk.js.map",
     "732.f7f96e75.chunk.js.map": "/aquasanidade/static/js/732.f7f96e75.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.82eac9b0.css",
-    "static/js/main.2fd7e112.js"
+    "static/js/main.60330215.js"
   ]
 }
