@@ -1,65 +1,51 @@
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import { formatDate } from './utils';
 
-const AnalysisReport = (historyData) => {
-    const doc = new jsPDF({
-        orientation: 'landscape'
-    });
+export const generatePDF = (farmName, pondId, samples, date, pond) => {
 
-    historyData.forEach((cultivo, index) => {
-        if (index !== 0) {
-            doc.addPage();
+    const doc = new jsPDF({ orientation: "landscape" });
+    const formattedDate = formatDate(date);
+    doc.text(`Relatório de Análise Sanitária - ${farmName} - Viveiro ${pond} - ${formattedDate}`, 10, 10);
+
+    const tableColumn = ["ID", "Peso", "Tempo Coag.", "Ctórax", "Hepatop túbs",
+        "Hepatop Líps", "TD Cont", "TD repleção", "Epicom Brânq", "Epicom epipodito",
+        "Necrose IMN", "Necrose Blackspot", "Deformids", "Ants-Verm", "Ants-Rug", "Uróp-Verm",
+        "Uróp-Lumin", "Pigment", "Pleóps"];
+    const tableRows = [];
+
+    samples.forEach(sample => {
+        const checkDeformidades = () => {
+            if (sample.obsDeformidades === 'Não')
+                return sample.obsDeformidades
+            else return sample.obsDeformidadesDetalhe
         }
-
-        doc.text(`Data de Povoamento: ${cultivo.dataPovoamento}`, 10, 10);
-        doc.text(`Origem PL: ${cultivo.origemPL}`, 10, 20);
-        doc.text(`Quantidade Estocada: ${cultivo.quantidadeEstocada}`, 10, 30);
-
-        const headers = [
-            "Data da Análise", "Peso", "Conformação Antenas", "Uropodos", "Necroses IMNV",
-            "Tempo de Coagulação", "Análise Cefalotórax", "Integridade Tubulos",
-            "Presença de Lipídeos", "Conteúdo do Trato", "Repleção do Trato",
-            "Brânquias Epicomensais", "Epipodito Epicomensais", "Necrose IMNV",
-            "Necrose Blackspot"
+        const sampleData = [
+            sample.id,
+            sample.peso,
+            sample.tempoCoagulacao,
+            sample.analiseCefalotorax,
+            sample.integridadeTubulos,
+            sample.presencaLipideos,
+            sample.conteudoTrato,
+            sample.replecaoTrato,
+            sample.branquiasEpicomensais,
+            sample.epipoditoEpicomensais,
+            sample.necroseIMNV,
+            sample.necroseBlackspot,
+            checkDeformidades(),
+            sample.antenasVermelhas,
+            sample.conformacaoAntenas,
+            sample.uropodosAvermelhados,
+            sample.uropodos,
+            sample.pigmentacao,
+            sample.pleopodos
         ];
-
-        const body = [];
-
-        if (cultivo.sanity) {
-            cultivo.sanity.forEach((sanityItem) => {
-                if (sanityItem.samples) {
-                    sanityItem.samples.forEach((sample) => {
-                        const row = [
-                            sanityItem.id.date || '',
-                            sample.peso || '',
-                            sample.conformacaoAntenas || '',
-                            sample.uropodos || '',
-                            sample.necrosesIMNV || '',
-                            sample.tempoCoagulacao || '',
-                            sample.analiseCefalotorax || '',
-                            sample.integridadeTubulos || '',
-                            sample.presencaLipideos || '',
-                            sample.conteudoTrato || '',
-                            sample.replecaoTrato || '',
-                            sample.branquiasEpicomensais || '',
-                            sample.epipoditoEpicomensais || '',
-                            sample.necroseIMNV || '',
-                            sample.necroseBlackspot || ''
-                        ];
-                        body.push(row);
-                    });
-                }
-            });
-        }
-
-        doc.autoTable({
-            head: [headers],
-            body: body,
-            startY: 40
-        });
+        tableRows.push(sampleData);
     });
 
-    doc.save('relatorio.pdf');
+    doc.autoTable({ head: [tableColumn], body: tableRows, startY: 20 });
+    doc.save(`Relatório_${farmName}_Viveiro_${pond}.pdf`);
 };
 
-export default AnalysisReport;
+

@@ -25,6 +25,7 @@ import im02 from './images/im02.png';
 import im03 from './images/im03.png';
 import im04 from './images/im04.png';
 import im05 from './images/im05.png';
+import laminas from './images/laminas.png'
 
 export {
     ws01,
@@ -51,5 +52,6 @@ export {
     im02,
     im03,
     im04,
-    im05
+    im05,
+    laminas
 };

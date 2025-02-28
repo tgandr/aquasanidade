@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/SanityAnalysis.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faChevronDown, faChevronUp, faSearchPlus } from '@fortawesome/free-solid-svg-icons';
 import * as images from '../assets/images';
 import morfologiaCamarao from '../assets/images/morfologia_camarao.png';
+import laminas from '../assets/images/laminas.png';
+import { CoagulationTimer, CheckScreen, ShowZoomPopup } from './utils';
 
-
-
-const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
+const Form = ({ analysisId, setShowAnalysisPopupPrevious, showForm, setShowForm }) => {
     const [checkScreen, setCheckScreen] = useState(false);
-    const [showForm, setShowForm] = useState(true);
     const [formAnalysis, setFormAnalysis] = useState({
         sampleId: '',
         peso: '',
+        pigmentacao: '',
         conformacaoAntenas: '',
+        antenasVermelhas: '',
+        pleopodos: '',
         uropodos: '',
+        uropodosAvermelhados: '',
         necrosesIMNV: '',
         tempoCoagulacao: '',
         analiseCefalotorax: '',
@@ -35,10 +37,6 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
     const [showZoomPopup, setShowZoomPopup] = useState(false);
     const [zoomImageSrc, setZoomImageSrc] = useState('');
     const [saveString, setSaveString] = useState('');
-    // const [analysis, setAnalysis] = useState({
-    //     id: {},
-    //     samples: []
-    // });
     const [samples, setSamples] = useState([]);
 
     const saveData = (data, key) => {
@@ -46,29 +44,18 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
             .filter((s) => s.id !== analysisId.id);
         let saveSample = JSON.parse(localStorage.getItem('farmsList'))
             .find(s => s.id === analysisId.id);
-        const updateSamples = {pond: analysisId.pond, samples: [...samples, {id: samples.length + 1, ...formAnalysis}]}
-        
+        const updateSamples = {
+            pond: analysisId.pond,
+            date: analysisId.date,
+            samples: [...samples, { id: samples.length + 1, ...formAnalysis }]
+        }
+
         if (saveSample.samples) {
-            saveSample = [...filter, {...saveSample, samples: [...saveSample.samples, updateSamples]}]
+            saveSample = [...filter, { ...saveSample, samples: [...saveSample.samples, updateSamples] }]
         } else {
-            saveSample = [...filter, {...saveSample, samples: [updateSamples]}]
+            saveSample = [...filter, { ...saveSample, samples: [updateSamples] }]
         }
         localStorage.setItem('farmsList', JSON.stringify(saveSample));
-
-        // const storedCultivos = JSON.parse(localStorage.getItem(`history`));
-        // const i = storedCultivos && storedCultivos.findIndex((viv) => viv.id == Number(data.id.pond));
-        // if (key in storedCultivos[i]) {
-        //     const sanity = [...storedCultivos[i].sanity, data];
-        //     const checkOut = { ...storedCultivos[i], sanity: sanity };
-        //     storedCultivos[i] = checkOut;
-        //     localStorage.setItem(`cultivo-${storedCultivos[i].id}`, JSON.stringify(checkOut));
-        //     localStorage.setItem('history', JSON.stringify(storedCultivos));
-        // } else {
-        //     const checkOut = { ...storedCultivos[i], sanity: [data] };
-        //     storedCultivos[i] = checkOut;
-        //     localStorage.setItem(`cultivo-${storedCultivos[i].id}`, JSON.stringify(checkOut));
-        //     localStorage.setItem('history', JSON.stringify(storedCultivos));
-        // }
         setShowForm(false);
         setShowAnalysisPopupPrevious(true);
     };
@@ -128,19 +115,21 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
 
     const handleAnalysisSubmit = (e) => {
         e.preventDefault();
-        console.log(samples)
         const sampleId = samples.length + 1;
-        // const sample = { ...formAnalysis, sampleId: sampleId };
         if (samples.length > 0) {
-            setSamples([...samples, {id: sampleId, ...formAnalysis}]);
+            setSamples([...samples, { id: sampleId, ...formAnalysis }]);
         } else {
-            setSamples([{id: sampleId, ...formAnalysis}]);
+            setSamples([{ id: sampleId, ...formAnalysis }]);
         }
         setFormAnalysis({
             sampleId: '',
             peso: '',
+            pigmentacao: '',
             conformacaoAntenas: '',
+            antenasVermelhas: '',
+            pleopodos: '',
             uropodos: '',
+            uropodosAvermelhados: '',
             necrosesIMNV: '',
             tempoCoagulacao: '',
             analiseCefalotorax: '',
@@ -183,11 +172,11 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
             {showForm &&
                 <div className="popup-sanity">
                     <div className="popup-inner-sanity">
-                        <h3 className="sanity-title">Análise Presuntiva</h3>
+                        <h2 className="sanity-title">Análise Presuntiva</h2>
                         <div className="main-content">
                             <form onSubmit={handleAnalysisSubmit} >
                                 <div className="form-content">
-                                    <h3>Conformação Externa</h3>
+                                    <h3>CONFORMAÇÃO EXTERNA</h3>
                                     <div className="images-container">
                                         <div className="image-wrapper" key="an01">
                                             <img
@@ -241,26 +230,46 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
                                                     </label>
                                                 </div>
                                             )}
-
-                                            {/* {formAnalysis.obsDeformidades === 'Sim' && (
-                                            <div className={`input-container ${formAnalysis.obsDeformidades === 'Sim' ? 'show' : ''}`}>
-                                                <label htmlFor="observacaoDetalhe">Qual:
-                                                    <input
-                                                        type="text"
-                                                        id="observacaoDetalhe"
-                                                        name="obsDeformidadesDetalhe"
-                                                        value={formAnalysis.obsDeformidadesDetalhe || ''}
-                                                        onChange={(e) => handleAnalysisChange(e)}
-                                                    />
-                                                </label>
-                                            </div>
-                                        )} */}
-
                                         </div>
                                     </label>
                                     <br />
+
+                                    <label name="pigmentacao">
+                                        <p>Pigmentação</p>
+                                        {/* Ilustrar avaliação de pigmentação */}
+                                        <div className="button-container">
+                                            {[1, 2, 3, 4].map((num) => (
+                                                <button
+                                                    type="button"
+                                                    key={num}
+                                                    className={`analysis-button ${formAnalysis.pigmentacao === num.toString() ? 'selected' : ''}`}
+                                                    onClick={(e) => handleAnalysisChangeClick(e, 'pigmentacao', num.toString())}
+                                                >
+                                                    {num}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </label>
+
+                                    <label name="pleopodos">
+                                        <p>Pleópodos</p>
+                                        {/* Ilustrar avaliação de pleópodos */}
+                                        <div className="button-container">
+                                            {[1, 2, 3, 4].map((num) => (
+                                                <button
+                                                    type="button"
+                                                    key={num}
+                                                    className={`analysis-button ${formAnalysis.pleopodos === num.toString() ? 'selected' : ''}`}
+                                                    onClick={(e) => handleAnalysisChangeClick(e, 'pleopodos', num.toString())}
+                                                >
+                                                    {num}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </label>
+
                                     <label>
-                                        Peso (em gramas):
+                                        <p>Peso (em gramas):</p>
                                         <input
                                             type="number"
                                             name="peso"
@@ -270,27 +279,44 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
                                         />
                                     </label>
                                     <label>
-                                        Antenas:
-                                        <div className="toggle-icon" onClick={(e) => { e.preventDefault(); toggleImages('conformacaoAntenas') }}>
-                                            <FontAwesomeIcon icon={showImages.conformacaoAntenas ? faChevronUp : faChevronDown} />
-                                            {showImages.conformacaoAntenas && (
-                                                <div className="images-container">
-                                                    <div className="image-wrapper" key="an01">
-                                                        <img
-                                                            src={images["an01"]}
-                                                            alt="Conformação das Antenas"
-                                                            onClick={(e) => { e.preventDefault(); handleImageClick("an01", 'conformacaoAntenas') }}
-                                                            style={{ cursor: 'pointer' }}
-                                                        />
-                                                        <FontAwesomeIcon
-                                                            icon={faSearchPlus}
-                                                            className="zoom-icon"
-                                                            onClick={(e) => { e.preventDefault(); openZoomPopup(images["an01"], 'conformacaoAntenas') }}
-                                                        />
+                                        <h3>Antenas</h3>
+
+                                        <label name="antenasVermelhas">
+                                            Coloração avermelhada
+                                            <div className="toggle-icon" onClick={(e) => { e.preventDefault(); toggleImages('conformacaoAntenas') }}>
+                                                <FontAwesomeIcon icon={showImages.conformacaoAntenas ? faChevronUp : faChevronDown} />
+                                                {showImages.conformacaoAntenas && (
+                                                    <div className="images-container">
+                                                        <div className="image-wrapper" key="an01">
+                                                            <img
+                                                                src={images["an01"]}
+                                                                alt="Conformação das Antenas"
+                                                                onClick={(e) => { e.preventDefault(); handleImageClick("an01", 'conformacaoAntenas') }}
+                                                                style={{ cursor: 'pointer' }}
+                                                            />
+                                                            <FontAwesomeIcon
+                                                                icon={faSearchPlus}
+                                                                className="zoom-icon"
+                                                                onClick={(e) => { e.preventDefault(); openZoomPopup(images["an01"], 'conformacaoAntenas') }}
+                                                            />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            )}
-                                        </div>
+                                                )}
+                                            </div>
+                                            <div className="button-container">
+                                                {[1, 2, 3, 4].map((num) => (
+                                                    <button
+                                                        type="button"
+                                                        key={num}
+                                                        className={`analysis-button ${formAnalysis.antenasVermelhas === num.toString() ? 'selected' : ''}`}
+                                                        onClick={(e) => handleAnalysisChangeClick(e, 'antenasVermelhas', num.toString())}
+                                                    >
+                                                        {num}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </label>
+
                                         <div className="button-container-classes">
                                             {["Normais", "Quebradiças", "Rugosas"].map((num) => (
                                                 <button
@@ -307,31 +333,48 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
 
                                     <label>
                                         <br />
-                                        Urópodos:
-                                        <div className="toggle-icon" onClick={(e) => { e.preventDefault(); toggleImages('uropodos') }}>
-                                            <FontAwesomeIcon icon={showImages.uropodos ? faChevronUp : faChevronDown} />
-                                            {showImages.uropodos && (
-                                                <div className="images-container">
-                                                    {["ur01", "ur02"].map((imgKey) => (
-                                                        <div className="image-wrapper" key={imgKey}>
-                                                            <img
-                                                                src={images[imgKey]}
-                                                                alt={`Urópodos ${imgKey}`}
-                                                                onClick={(e) => { e.preventDefault(); handleImageClick(imgKey, 'uropodos') }}
-                                                                style={{ cursor: 'pointer' }}
-                                                            />
-                                                            <FontAwesomeIcon
-                                                                icon={faSearchPlus}
-                                                                className="zoom-icon"
-                                                                onClick={(e) => { e.preventDefault(); openZoomPopup(images[imgKey], 'uropodos') }}
-                                                            />
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
+                                        <h3>Urópodos</h3>
+
+                                        <label name="uropodosAvermelhados">
+                                            Coloração avermelhada
+                                            <div className="toggle-icon" onClick={(e) => { e.preventDefault(); toggleImages('uropodos') }}>
+                                                <FontAwesomeIcon icon={showImages.uropodos ? faChevronUp : faChevronDown} />
+                                                {showImages.uropodos && (
+                                                    <div className="images-container">
+                                                        {["ur01", "ur02"].map((imgKey) => (
+                                                            <div className="image-wrapper" key={imgKey}>
+                                                                <img
+                                                                    src={images[imgKey]}
+                                                                    alt={`Urópodos ${imgKey}`}
+                                                                    onClick={(e) => { e.preventDefault(); handleImageClick(imgKey, 'uropodos') }}
+                                                                    style={{ cursor: 'pointer' }}
+                                                                />
+                                                                <FontAwesomeIcon
+                                                                    icon={faSearchPlus}
+                                                                    className="zoom-icon"
+                                                                    onClick={(e) => { e.preventDefault(); openZoomPopup(images[imgKey], 'uropodos') }}
+                                                                />
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div className="button-container">
+                                                {[1, 2, 3, 4].map((num) => (
+                                                    <button
+                                                        type="button"
+                                                        key={num}
+                                                        className={`analysis-button ${formAnalysis.uropodosAvermelhados === num.toString() ? 'selected' : ''}`}
+                                                        onClick={(e) => handleAnalysisChangeClick(e, 'uropodosAvermelhados', num.toString())}
+                                                    >
+                                                        {num}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </label>
+
                                         <div className="button-container-classes">
-                                            {["Normais", "Luminescentes", "Avermelhados"].map((num) => (
+                                            {["Normais", "Luminescentes"].map((num) => (
                                                 <button
                                                     type="button"
                                                     key={num}
@@ -344,61 +387,29 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
                                         </div>
                                     </label>
 
-
-                                    <label>
-                                        <br />
-                                        Presença de Necroses Indicativas de IMNV:
-                                        <div className="toggle-icon" onClick={(e) => { e.preventDefault(); toggleImages('necrosesIMNV') }}>
-                                            <FontAwesomeIcon icon={showImages.necrosesIMNV ? faChevronUp : faChevronDown} />
-                                            {showImages.necrosesIMNV && (
-                                                <div className="images-container">
-                                                    <div className="image-wrapper" key="imnv01">
-                                                        <img
-                                                            src={images['imnv01']}
-                                                            alt="necroses indicativas de IMNV"
-                                                            onClick={(e) => { e.preventDefault(); handleImageClick('imnv01', 'necrosesIMNV') }}
-                                                            style={{ cursor: 'pointer' }}
-                                                        // https://gia.org.br/portal/doencas-que-afetam-camaroes-marinhos-e-sao-de-notificacao-obrigatoria/
-                                                        />
-                                                        <FontAwesomeIcon
-                                                            icon={faSearchPlus}
-                                                            className="zoom-icon"
-                                                            onClick={(e) => { e.preventDefault(); openZoomPopup(images['imnv01'], 'necrosesIMNV') }}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                        <div className="button-container-classes">
-                                            {["Sim", "Não"].map((num) => (
-                                                <button
-                                                    type="button"
-                                                    key={num}
-                                                    className={`analysis-button-classes ${formAnalysis.necrosesIMNV === num ? 'selected' : ''}`}
-                                                    onClick={(e) => handleAnalysisChangeClick(e, 'necrosesIMNV', num)}
-                                                >
-                                                    {num}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </label>
-
                                     <p>________________</p>
-                                    <label>
-                                        <h3>Tempo de Coagulação da Hemolinfa (em segundos):</h3>
-                                        <input
-                                            type="number"
-                                            name="tempoCoagulacao"
-                                            value={formAnalysis.tempoCoagulacao}
-                                            onChange={handleAnalysisChange}
-                                            required
-                                        />
-                                    </label>
+                                    <CoagulationTimer
+                                        formAnalysis={formAnalysis}
+                                        handleAnalysisChange={handleAnalysisChange} />
                                     <p>________________</p>
                                     <br />
 
+                                    <h3>OBSERVAÇÃO EM LUPA</h3>
+                                    <div className="images-container">
+                                        <div className="image-wrapper" key="an01">
+                                            <img
+                                                src={laminas}
+                                                alt="Lâminas prepadrada para observação em microscópio" />
+                                            <FontAwesomeIcon
+                                                icon={faSearchPlus}
+                                                className="zoom-icon"
+                                                onClick={(e) => { e.preventDefault(); openZoomPopup(laminas, 'laminas') }}
+                                            />
+                                        </div>
+                                    </div>
+
                                     <label name="analiseCefalotorax">
-                                        Análise de Cefalotórax
+                                        Análise de Cefalotórax - Carapaça
                                         <div className="toggle-icon" onClick={(e) => { e.preventDefault(); toggleImages('analiseCefalotorax') }}>
                                             <FontAwesomeIcon icon={showImages.analiseCefalotorax ? faChevronUp : faChevronDown} />
                                             {showImages.analiseCefalotorax && (
@@ -517,7 +528,6 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
 
                                     <p>________________</p>
                                     <br />
-
                                     <h3>Trato Digestório</h3>
 
                                     <label name="conteudoTratoMedio">
@@ -592,6 +602,13 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
                                                             />
                                                         </div>
                                                     ))}
+                                                    <p>Contar gregarinas, trofozoitos e gametócitos (quantidade de indivíduos):</p>
+                                                    <ul className="points-list" style={{ textAlign: "left" }}>
+                                                        <li>0-20: 1</li>
+                                                        <li>21-30: 2</li>
+                                                        <li>31-40: 3</li>
+                                                        <li>41-50: 4</li>
+                                                    </ul>
                                                 </div>
                                             )}
                                         </div>
@@ -610,7 +627,7 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
                                     </label>
 
                                     <label>
-                                        Repleção:
+                                        Repleção:<br /><br />
                                         <div className="button-container">
                                             {[1, 2, 3, 4].map((num) => (
                                                 <button
@@ -629,7 +646,7 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
                                     <br />
                                     <h3>Presença de Epicomensais</h3>
                                     <label>
-                                        Brânquias:
+                                        Brânquias:<br /><br />
                                         <div className="button-container">
                                             {[1, 2, 3, 4].map((num) => (
                                                 <button
@@ -645,7 +662,7 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
                                         </div>
                                     </label>
                                     <label>
-                                        Epipodito:
+                                        Epipodito:<br /><br />
                                         <div className="button-container">
                                             {[1, 2, 3, 4].map((num) => (
                                                 <button
@@ -665,6 +682,27 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
                                     <h3>Necroses</h3>
                                     <label>
                                         IMNV:
+                                        <div className="toggle-icon" onClick={(e) => { e.preventDefault(); toggleImages('necrosesIMNV') }}>
+                                            <FontAwesomeIcon icon={showImages.necrosesIMNV ? faChevronUp : faChevronDown} />
+                                            {showImages.necrosesIMNV && (
+                                                <div className="images-container">
+                                                    <div className="image-wrapper" key="imnv01">
+                                                        <img
+                                                            src={images['imnv01']}
+                                                            alt="necroses indicativas de IMNV"
+                                                            onClick={(e) => { e.preventDefault(); handleImageClick('imnv01', 'necrosesIMNV') }}
+                                                            style={{ cursor: 'pointer' }}
+                                                        // https://gia.org.br/portal/doencas-que-afetam-camaroes-marinhos-e-sao-de-notificacao-obrigatoria/
+                                                        />
+                                                        <FontAwesomeIcon
+                                                            icon={faSearchPlus}
+                                                            className="zoom-icon"
+                                                            onClick={(e) => { e.preventDefault(); openZoomPopup(images['imnv01'], 'necrosesIMNV') }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
                                         <div className="button-container">
                                             {[1, 2, 3, 4].map((num) => (
                                                 <button
@@ -680,7 +718,7 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
                                         </div>
                                     </label>
                                     <label>
-                                        Blackspot:
+                                        Blackspot:<br /><br />
                                         <div className="button-container">
                                             {[1, 2, 3, 4].map((num) => (
                                                 <button
@@ -695,50 +733,6 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
                                             ))}
                                         </div>
                                     </label>
-                                    {/* <h3>Observações</h3>
-                                <label>
-                                    <div className="observacoes-container">
-                                        <p>Deformidades?</p>
-                                        <div>
-                                            <label>
-                                                <input
-                                                    type="radio"
-                                                    id="observacaoSim"
-                                                    name="obsDeformidades"
-                                                    value="Sim"
-                                                    checked={formAnalysis.obsDeformidades === 'Sim'}
-                                                    onChange={(e) => handleAnalysisChange(e)}
-                                                />
-                                                <span>Sim</span></label>
-                                        </div>
-                                        <div>
-                                            <label>
-                                                <input
-                                                    type="radio"
-                                                    id="observacaoNao"
-                                                    name="obsDeformidades"
-                                                    value="Não"
-                                                    checked={formAnalysis.obsDeformidades === 'Não'}
-                                                    onChange={(e) => handleAnalysisChange(e)}
-                                                />
-                                                <span>Não</span></label>
-                                        </div>
-                                        {formAnalysis.obsDeformidades === 'Sim' && (
-                                            <div className="input-container">
-                                                <label htmlFor="observacaoDetalhe">Qual:
-                                                    <input
-                                                        type="text"
-                                                        id="observacaoDetalhe"
-                                                        name="obsDeformidadesDetalhe"
-                                                        value={formAnalysis.obsDeformidadesDetalhe || ''}
-                                                        onChange={(e) => handleAnalysisChange(e)}
-                                                    />
-                                                </label>
-                                            </div>
-                                        )}
-                                    </div>
-                                </label> */}
-
                                 </div>
                                 <span>
                                     <button type="submit" className="add-shrimp">+</button>
@@ -749,8 +743,8 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
                                     <button
                                         type="button"
                                         onClick={() => (
-                                            setShowForm(false)
-                                            // setShowAnalysisPopupPrevious({ start: true, previous: false })
+                                            setShowForm(false),
+                                            setShowAnalysisPopupPrevious(true)
                                         )}
                                         className="cancel-button">
                                         Voltar
@@ -761,35 +755,16 @@ const Form = ({ analysisId, setShowAnalysisPopupPrevious }) => {
                                         className="first-class-button">
                                         Finalizar
                                     </button>
-
                                 </div>
                             </form>
                         </div>
-
                     </div >
                 </div >
             }
 
-            {
-                showZoomPopup && (
-                    <div className="zoom-popup">
-                        <div className="zoom-popup-inner">
-                            <button className="close-zoom-popup" onClick={closeZoomPopup}>×</button>
-                            <img src={zoomImageSrc} alt="Zoomed view" className="zoom-image" />
-                        </div>
-                    </div>
-                )
-            }
+            {showZoomPopup && <ShowZoomPopup closeZoomPopup={closeZoomPopup} zoomImageSrc={zoomImageSrc} />}
 
-            {
-                checkScreen && (
-                    <div className="popup-sanity">
-                        <div className="popup-inner-check">
-                            <FontAwesomeIcon icon={faCheck} size="4x" />
-                        </div>
-                    </div>
-                )
-            }
+            {checkScreen && <CheckScreen />}
         </>
     )
 };

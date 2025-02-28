@@ -6,6 +6,9 @@
     --color-orange-dark: #EA580C;
     --color-orange-medium: #FB923C;
     --color-orange-light: #FED7AA;
+    --color-white2: #f3f5f0;
+    --color-ciano-medium: #44BBEF;
+    --color-magenta-medium: #B91049;
 }
 
 .popup-sanity {
@@ -290,18 +293,27 @@
 .image-wrapper {
     position: relative;
     display: inline-block;
-    width: 100%; /* Ajusta para ocupar toda a largura do contêiner */
-    max-width: 300px; /* Limita a largura máxima */
-    margin: 0 auto; /* Centraliza a imagem */
+    width: 100%;
+    /* Ajusta para ocupar toda a largura do contêiner */
+    max-width: 300px;
+    /* Limita a largura máxima */
+    margin: 0 auto;
+    /* Centraliza a imagem */
 }
 
 .image-wrapper img {
-    width: 100%; /* Adapta a largura da imagem ao contêiner */
-    height: auto; /* Mantém a proporção da imagem */
-    max-width: 100%; /* Evita que a imagem ultrapasse os limites */
-    object-fit: contain; /* Garante que a imagem seja contida no espaço disponível */
-    border: 1px solid #ccc; /* Adiciona uma borda leve, opcional */
-    border-radius: 5px; /* Arredonda os cantos, opcional */
+    width: 100%;
+    /* Adapta a largura da imagem ao contêiner */
+    height: auto;
+    /* Mantém a proporção da imagem */
+    max-width: 100%;
+    /* Evita que a imagem ultrapasse os limites */
+    object-fit: contain;
+    /* Garante que a imagem seja contida no espaço disponível */
+    border: 1px solid #ccc;
+    /* Adiciona uma borda leve, opcional */
+    border-radius: 5px;
+    /* Arredonda os cantos, opcional */
 }
 
 .zoom-icon {
@@ -467,4 +479,451 @@ select {
     font-size: 16px;
     cursor: pointer;
     margin: 5px;
+}
+
+.presentation-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    text-align: center;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.presentation-image {
+    width: 90%;
+    max-width: 1000px;
+    height: auto;
+    border-radius: 10px;
+}
+
+.presentation-container h2 {
+    color: #333;
+    margin-top: 15px;
+    font-size: 1.8rem;
+}
+
+.presentation-container p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 10px auto;
+}
+
+.presentation-container button {
+    padding: 10px 20px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-size: 1rem;
+}
+
+.presentation-container button:hover {
+    background: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .presentation-image {
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .presentation-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .presentation-container p {
+        font-size: 1rem;
+    }
+}
+
+.lattes-logo {
+    height: auto;
+    vertical-align: middle;
+    /* Alinha verticalmente com o texto */
+    margin-left: 8px;
+    /* Espaço entre o texto e a imagem */
+}
+
+.farm-section {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.farm-section h4 {
+    margin: 0;
+    padding-bottom: 10px;
+    font-size: 20px;
+    color: #333;
+}
+
+.pond-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.pond-section h5 {
+    margin: 0;
+    font-size: 18px;
+    color: #555;
+}
+
+.pdf-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.pdf-button:hover {
+    background-color: #c9302c;
+}
+
+.pdf-button svg {
+    font-size: 20px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    /* Espaço de 10px entre os botões */
+}
+
+.pdf-button,
+.delete-button {
+    padding: 8px 12px;
+    font-size: 16px;
+}
+
+.delete-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #c9302c;
+}
+
+.delete-button svg {
+    font-size: 20px;
+}
+
+.coagulation-timer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    max-width: 300px;
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.input-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.input-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    /* Permite que o clique em qualquer lugar da área expanda o cronômetro */
+}
+
+.input-with-icon input {
+    width: 100px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    margin: 0 !important;
+}
+
+.toggle-icon-clock,
+.chevron-icon-clock {
+    cursor: pointer;
+    color: #007bff;
+    font-size: 1.2rem;
+    transition: transform 0.2s ease, color 0.3s;
+}
+
+.toggle-icon-clock:hover,
+.chevron-icon-clock:hover {
+    transform: scale(1.2);
+    color: #0056b3;
+}
+
+.chevron-icon-clock {
+    transition: transform 0.3s ease;
+}
+
+.timer-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.timer-display {
+    font-size: 2.5rem;
+    font-weight: bold;
+    background-color: #000;
+    color: #0f0;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    min-width: 120px;
+    text-align: center;
+}
+
+.timer-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.timer-button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.timer-button.iniciar {
+    background-color: var(--color-blue-medium);
+    color: white;
+}
+
+.timer-button.parar {
+    background-color: #f44336;
+    color: white;
+}
+
+.timer-button.salvar {
+    background-color: var(--color-blue-dark);
+    color: white;
+}
+
+.timer-button.reset {
+    background-color: var(--color-orange-medium);
+    color: white;
+}
+
+.timer-button:disabled {
+    background-color: var(--color-orange-light);
+    cursor: not-allowed;
+    color: var(--color-blue-dark);
+}
+
+.adjust-buttons-container {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    width: 50%;
+}
+
+.adjust-buttons-container p {
+    border-top: 1px solid var(--color-ciano-medium);
+    border-bottom: 1px solid var(--color-ciano-medium);
+    border-left: none;
+    border-right: none;
+    height: 50px;
+    align-content: center;
+    color: var(--color-ciano-medium);
+    padding: 0px 10px;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    box-sizing: border-box;
+}
+
+.adjust-buttons-right {
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
+    border: 1px solid var(--color-ciano-medium);
+    border-radius: 0px 5px 5px 0px;
+    background-color: var(--color-ciano-medium);
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.adjust-buttons-left {
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
+    border: 1px solid var(--color-ciano-medium);
+    border-radius: 5px 0px 0px 5px;
+    background-color: var(--color-ciano-medium);
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.adjust-buttons-left:active,
+.adjust-buttons-right:active {
+    background-color: var(--color-orange-light);
+    /* Cor durante o clique */
+    color: white;
+    /* Cor do texto durante o clique */
+    /* transform: scale(0.95); /* Leve redução no tamanho para efeito visual */
+}
+
+.link-style {
+    text-decoration: none;
+    color: inherit;
+}
+
+.icon-plus {
+    font-size: 1.5rem;
+    /* Tamanho maior do ícone */
+    color: var(--color-white);
+}
+
+.webcam-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 640px;
+}
+
+.webcam {
+    width: 100%;
+    height: auto;
+}
+
+.results {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    background-color: var(--color-blue-dark);
+    color: white;
+    height: 100px;
+    width: 280px;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.results input {
+    width: 50px !important;
+    height: 30px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: none;
+    color: #fdfcfc;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.camera-button {
+    padding: 10px;
+    width: 50%;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 0px;
+    align-self: center;
+    background-color: var(--color-ciano-medium);
+    color: white;
+    font-size: 1.5rem;
+}
+
+.camera-button-back {
+    padding: 10px;
+    width: 50%;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 0px;
+    align-self: center;
+    background-color: var(--color-ciano-medium);
+    color: white;
+}
+
+.analysis-buttons-start {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.analysis-button-start {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    /* box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2); */
+    text-transform: uppercase;
+}
+
+.analysis-button-start .icon-plus {
+    font-size: 18px;
+}
+
+.analysis-button-start.presuntiva {
+    background: linear-gradient(135deg, var(--color-blue-dark), var(--color-ciano-medium));
+    color: white;
+}
+
+.analysis-button-start.presuntiva:hover {
+    background: linear-gradient(135deg, var(--color-ciano-medium), var(--color-blue-dark));
+    transform: translateY(-2px);
+    box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.analysis-button-start.contagem {
+    background: linear-gradient(135deg, var(--color-magenta-medium), var(--color-orange-medium));
+    color: white;
+}
+
+.analysis-button-start.contagem:hover {
+    background: linear-gradient(135deg, var(--color-orange-medium), var(--color-magenta-medium));
+    transform: translateY(-2px);
+    box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.3);
 }

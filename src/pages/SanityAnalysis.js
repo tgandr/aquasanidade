@@ -2,15 +2,23 @@ import React, { useState, useEffect } from 'react';
 import '../styles/SanityAnalysis.css';
 import Form from './Form';
 import { v4 as uuidv4 } from 'uuid';
-import AnalysisReport from './AnalysisReport';
+import { generatePDF } from './AnalysisReport';
+import iconShrimp from '../assets/images/icon_shrimp.png';
+import { FaFilePdf, FaTrashAlt } from "react-icons/fa";
+import { formatDate } from './utils';
+import CountingPls from './CountingPls';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSyringe, faCamera } from '@fortawesome/free-solid-svg-icons';
 
 const SanityAnalysis = () => {
     const [showFormP, setShowFormP] = useState(false);
-    const [showAnalysisPopupPrevious, setShowAnalysisPopupPrevious] = useState(true);
+    const [showAnalysisPopupPrevious, setShowAnalysisPopupPrevious] = useState(false);
     const [farms, setFarms] = useState([]);
-    // const [storedPonds, setStoredPonds] = useState([]);
     const [showNewFarmPopup, setShowNewFarmPopup] = useState(false);
+    const [showForm, setShowForm] = useState(true);
     const [showNewPond, setShowNewPond] = useState(false);
+    const [showCounting, setShowCounting] = useState(false);
     const [analysisId, setAnalysisId] = useState({
         farm: '',
         area: '',
@@ -22,17 +30,20 @@ const SanityAnalysis = () => {
         shrimpsPinned: false
     });
     const [ponds, setPonds] = useState([]);
+    const [presentation, setPresentation] = useState(true);
+    const [showReports, setShowReports] = useState(false);
 
     const handleStartSample = (e) => {
         e.preventDefault();
         setShowAnalysisPopupPrevious(false);
+        setShowForm(true)
         setShowFormP(true);
     };
 
     useEffect(() => {
         const farms = JSON.parse(localStorage.getItem('farmsList')) || [];
         setFarms(farms);
-    }, [showNewFarmPopup]);
+    }, [showNewFarmPopup, showReports, showForm, showAnalysisPopupPrevious]);
 
     useEffect(() => {
         const farmsList = JSON.parse(localStorage.getItem('farmsList'));
@@ -42,7 +53,7 @@ const SanityAnalysis = () => {
                 setPonds(farm.ponds)
             }
         }
-    }, [showNewPond, analysisId]);
+    }, [showNewPond, analysisId, showForm, showReports]);
 
     useEffect(() => {
         if (analysisId.farm === "custom") {
@@ -123,8 +134,102 @@ const SanityAnalysis = () => {
         setAnalysisId({ ...analysisId, area: '', pond: '' })
     }
 
+
+    const [farmsList, setFarmsList] = useState([]);
+
+    useEffect(() => {
+        const farms = JSON.parse(localStorage.getItem("farmsList")) || [];
+        setFarmsList(farms);
+    }, [showNewFarmPopup, showReports, showForm, showAnalysisPopupPrevious]);
+
+    const confirmDelete = (farmId, pondId) => {
+        if (window.confirm("Tem certeza que deseja excluir este viveiro? Essa ação não pode ser desfeita.")) {
+            deletePond(farmId, pondId);
+        }
+    };
+
+    const deletePond = (farmId, pondId) => {
+        const updatedFarmsList = farmsList.map(farm => {
+            if (farm.id === farmId) {
+                return {
+                    ...farm,
+                    samples: farm.samples.filter(pond => pond.pond !== pondId)
+                };
+            }
+            return farm;
+        }).filter(farm => farm.samples.length > 0); // Remove fazendas sem viveiros
+
+        localStorage.setItem("farmsList", JSON.stringify(updatedFarmsList));
+        setFarmsList(updatedFarmsList);
+    };
+
     return (
         <>
+            {presentation &&
+                <div className="presentation-container">
+                    <img
+                        src={require("../assets/images/morada_nova-02.jpg")}
+                        alt="Morada Nova"
+                        className="presentation-image"
+                    />
+                    <img
+                        src={iconShrimp}
+                        alt='ícone camarão'
+                        style={{ width: '100px' }}
+                    />
+                    <h2>Aqua Sanidade</h2>
+                    <p>Utilize esta ferramenta para registrar e analisar dados de análises presuntivas em camarões.</p>
+                    <div>
+                        Desenvolvido pelo Prof. Thiago Silva
+                        <a href="http://lattes.cnpq.br/0867464831177008" target="_blank" rel="noopener noreferrer">
+                            <img
+                                src={require("../assets/images/logolattes.gif")}
+                                alt="Currículo Lattes"
+                                className="lattes-logo"
+                            />
+                        </a>
+                        <br /><br />
+                        Equipe:<br />
+                        Caio Rodrigues<br />
+                        Jardel Batista<br />
+                        Jonata de Paulo<br />
+                        Luis Davi Sampaio<br />
+                        Messias de Oliveira Filho<br />
+                    </div>
+                    <br /><br />
+                    {/* <button
+                        className=""
+                        onClick={() => (setPresentation(false),
+                            setShowAnalysisPopupPrevious(true))}>
+                        Análise Presuntiva&nbsp;
+                        <FontAwesomeIcon icon={faSyringe} className="icon-plus" />
+                    </button>
+                    <button
+                        className=""
+                        onClick={() => (setPresentation(false),
+                            setShowCounting(true))}>
+                        Contagem de PLs&nbsp;
+                        <FontAwesomeIcon icon={faCamera} className="icon-plus" />
+                    </button> */}
+                    <div className="analysis-buttons-start">
+                        <button
+                            className="analysis-button-start presuntiva"
+                            onClick={() => (setPresentation(false), setShowAnalysisPopupPrevious(true))}
+                        >
+                            Análise Presuntiva&nbsp;
+                            <FontAwesomeIcon icon={faSyringe} className="icon-plus" />
+                        </button>
+                        <button
+                            className="analysis-button-start contagem"
+                            onClick={() => (setPresentation(false), setShowCounting(true))}
+                        >
+                            Contagem de PLs&nbsp;
+                            <FontAwesomeIcon icon={faCamera} className="icon-plus" />
+                        </button>
+                    </div>
+
+                </div>}
+
             {showAnalysisPopupPrevious &&
                 <div className="popup-sanity">
                     <div className="popup-inner-sanity">
@@ -188,25 +293,22 @@ const SanityAnalysis = () => {
                                 <button
                                     type="button"
                                     className="cancel-button"
-                                    // onClick={() => setShowAnalysisPopupPrevious({ start: false, previous: true })}>
-                                    onClick={() => setShowAnalysisPopupPrevious(false)}>
+                                    onClick={() => (setShowAnalysisPopupPrevious(false), setPresentation(true))}>
                                     Voltar
                                 </button>
+                                <button
+                                    type="button"
+                                    onClick={() => (setShowReports(true), setShowAnalysisPopupPrevious(false))}
+                                    className="first-class-button">
+                                    Relatórios</button>
                                 <button
                                     type="submit"
                                     className="first-class-button">
                                     Lançar observações</button>
-                                <button
-                                    type="button"
-                                    // onClick={() => AnalysisReport(JSON.parse(localStorage.getItem('history')))}
-                                    
-                                    className="first-class-button">
-                                    Relatório</button>
                             </div>
                         </form>
                     </div>
                 </div>
-
             }
 
             {showNewFarmPopup && (
@@ -295,11 +397,65 @@ const SanityAnalysis = () => {
                 </div>
             }
 
-            {
-                // showForm && (<Form analysisId={analysisId} />)
-                showFormP && <Form analysisId={analysisId} setShowAnalysisPopupPrevious={setShowAnalysisPopupPrevious} />
-
+            {showFormP && <Form
+                analysisId={analysisId}
+                setShowAnalysisPopupPrevious={setShowAnalysisPopupPrevious}
+                showForm={showForm}
+                setShowForm={setShowForm} />
             }
+
+            {showReports &&
+                <div className="popup-sanity">
+                    <div className="popup-inner-sanity">
+                        <h3>Relatórios</h3>
+
+                        {farmsList.map(farm => (
+                            <div key={farm.id} className="farm-section">
+                                <h4>{farm.name}</h4>
+                                {farm.samples && farm.samples.map(pondData => (
+                                    <div key={pondData.pond} className="pond-section">
+                                        <h5>Viveiro {farm.ponds.filter(p => p.id === pondData.pond)[0].pond} -
+                                            {formatDate(pondData.date)}
+                                        </h5>
+
+                                        <div className="button-group">
+                                            <button
+                                                className="pdf-button"
+                                                onClick={() => generatePDF(farm.name,
+                                                    pondData.pond,
+                                                    pondData.samples,
+                                                    pondData.date,
+                                                    farm.ponds.filter(p => p.id === pondData.pond)[0].pond)}>
+                                                <FaFilePdf />
+                                            </button>
+
+                                            <button
+                                                className="delete-button"
+                                                onClick={() => confirmDelete(farm.id, pondData.pond)}>
+                                                <FaTrashAlt />
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                        <br /><br />
+                        <button
+                            type="button"
+                            className="cancel-button"
+                            style={{ alignSelf: 'center' }}
+                            onClick={() => (setShowReports(false), setShowAnalysisPopupPrevious(true))}>
+                            Voltar
+                        </button>
+
+                    </div>
+                </div>
+            }
+
+            {showCounting && <CountingPls
+                setPresentation={setPresentation}
+                setShowCounting={setShowCounting} />}
         </>
     );
 };

@@ -1,14 +1,14 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import SanityAnalysis from "./pages/SanityAnalysis";
 
 const AppRoutes = () => {
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<SanityAnalysis />} />
-            </Routes>
-        </Router>
+        <Routes>
+            <Route path="/" element={<SanityAnalysis />} />
+            <Route path="/aquadata" element={<SanityAnalysis />} />
+
+        </Routes>
     );
 };
 
